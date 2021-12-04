@@ -34,18 +34,32 @@ function getRate(rateName, ones) {
 function getNumberOfBinary(binary) {
     return parseInt(binary, 2);
 }
-// function part2() {
-//     const position = [0, 0, 0];
-//     commands.forEach(command => {
-//         if (command[0] === 'forward') {
-//             position[0] += command[1];
-//             position[1] += position[2] * command[1];
-//         } else if (command[0] === 'up') {
-//             position[2] -= command[1];
-//         } else if (command[0] === 'down') {
-//             position[2] += command[1];
-//         }
-//     });
-//     return position[0] * position[1];
-// }
-// console.log(part2());
+
+function part2() {
+    const oxygenGeneratorRating = getRating([...lines], 0, false);
+    const co2scrubberRating = getRating([...lines], 0, true);
+    return getNumberOfBinary(oxygenGeneratorRating) * getNumberOfBinary(co2scrubberRating);
+}
+console.log(part2());
+
+function getRating(lines, index, inverse) {
+    if (index === lines[0].length || lines.length < 2) {
+        return lines[0];
+    }
+    let ones = 0;
+    lines.forEach(l => {
+        if (l[index] === '1') {
+            ones++;
+        }
+    });
+    if (inverse ? ones < lines.length / 2 : ones >= lines.length / 2) {
+        lines = filterLines(lines, '1', index);
+    } else {
+        lines = filterLines(lines, '0', index);
+    }
+    return getRating(lines, index + 1, inverse);
+}
+
+function filterLines(lines, bit, index) {
+    return lines.filter(l => l[index] === bit);
+}
