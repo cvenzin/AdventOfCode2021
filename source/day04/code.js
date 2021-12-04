@@ -9,7 +9,7 @@ const originalBoards = [];
 for (let i = 2; i < lines.length - 4; i += 6) {
     const board = [];
     for (let j = i; j < i + 5; j++) {
-        const boardLine = lines[j].split(' ').map(Number);
+        const boardLine = lines[j].split(' ').filter(l => l !== '').map(Number);
         board.push(boardLine);
     }
     originalBoards.push(board);
@@ -17,7 +17,7 @@ for (let i = 2; i < lines.length - 4; i += 6) {
 
 
 function part1() {
-    const boards = [...originalBoards];
+    const boards = JSON.parse(JSON.stringify(originalBoards));
     for (let i = 0; i < drawnNumbers.length; i++) {
         updateBoards(boards, drawnNumbers[i]);
         for (let j = 0; j < boards.length; j++) {
@@ -30,12 +30,34 @@ function part1() {
 }
 console.log(part1());
 
+function part2() {
+    const boards = JSON.parse(JSON.stringify(originalBoards));
+    const winningBoards = [];
+    for (let i = 0; i < drawnNumbers.length; i++) {
+        updateBoards(boards, drawnNumbers[i]);
+        for (let j = 0; j < boards.length; j++) {
+            if (!winningBoards.find(w => w === boards[j]) && boardHasWon(boards[j])) {
+                winningBoards.push(boards[j]);
+            }
+            if (winningBoards.length === boards.length) {
+                return getScore(boards[j]) * drawnNumbers[i];
+            }
+        }
+    }
+    return 'no last winner';
+}
+console.log(part2());
+
+
 function boardHasWon(board) {
     for (let i = 0; i < board.length; i++) {
         if (board[i].every(n => n === null)) {
             return true;
         }
-    };
+        if (board.every(n => n[i] === null)) {
+            return true;
+        }
+    }
     return false;
 }
 
