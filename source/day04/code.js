@@ -33,18 +33,20 @@ console.log(part1());
 function part2() {
     const boards = JSON.parse(JSON.stringify(originalBoards));
     const winningBoards = [];
-    for (let i = 0; i < drawnNumbers.length; i++) {
-        updateBoards(boards, drawnNumbers[i]);
-        for (let j = 0; j < boards.length; j++) {
-            if (!winningBoards.find(w => w === boards[j]) && boardHasWon(boards[j])) {
-                winningBoards.push(boards[j]);
-            }
-            if (winningBoards.length === boards.length) {
-                return getScore(boards[j]) * drawnNumbers[i];
+    loop1:
+        for (let i = 0; i < drawnNumbers.length; i++) {
+            updateBoards(boards, drawnNumbers[i]);
+            for (let j = 0; j < boards.length; j++) {
+                if (!winningBoards.find(w => w[0] === boards[j]) && boardHasWon(boards[j])) {
+                    winningBoards.push([boards[j], drawnNumbers[i]]);
+                    if (winningBoards.length === boards.length) {
+                        break loop1;
+                    }
+                }
             }
         }
-    }
-    return 'no last winner';
+    const lastWinner = winningBoards.pop();
+    return getScore(lastWinner[0]) * lastWinner[1];
 }
 console.log(part2());
 
