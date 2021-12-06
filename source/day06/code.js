@@ -23,10 +23,9 @@ function computeFishCount(days, fish) {
     });
 
     for (let i = 0; i < days; i++) {
-        const zeroTimerFish = data[0];
         // move array to the left and update fish count
+        const zeroTimerFish = data.shift();
         data.push(zeroTimerFish);
-        data.shift();
         data[6] += zeroTimerFish;
     }
 
