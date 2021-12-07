@@ -16,7 +16,7 @@ function part2() {
 console.log(part2());
 
 function compute(movingCost) {
-    const index = crabPositions.length / 2;
+    const index = Math.floor(crabPositions.reduce((a, b) => a + b) / crabPositions.length);
     let fuel = Number.MAX_SAFE_INTEGER;
     fuel = getCheapestFuel(fuel, false, index, movingCost);
     fuel = getCheapestFuel(fuel, true, index - 1, movingCost);
