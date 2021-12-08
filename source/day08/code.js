@@ -27,12 +27,7 @@ function part2() {
         const decodedDigits = [];
         rightDigits.forEach(d => {
             const values = d.split('');
-            for (let i = 0; i < definition.length; i++) {
-                if (arraysAreEqual(values, definition[i])) {
-                    decodedDigits.push(i);
-                    break;
-                }
-            }
+            decodedDigits.push(definition.findIndex(d => arraysAreEqual(values, d)));
         });
         outputValues.push(Number(decodedDigits.join('')));
     });
