@@ -1,6 +1,6 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day11');
 
@@ -73,9 +73,9 @@ function reset(grid) {
     }
 }
 
-function getGrid(lines) {
+function getGrid(ls) {
     const grid = [];
-    lines.forEach(l => {
+    ls.forEach(l => {
         grid.push(l.split('').map(Number));
     });
     return grid;

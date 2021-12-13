@@ -1,6 +1,6 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day06');
 const fish = lines[0].split(',').map(Number);
@@ -15,10 +15,10 @@ function part2() {
 }
 console.log(part2());
 
-function computeFishCount(days, fish) {
+function computeFishCount(days, fishList) {
     // index is timer, value is number of fish
     const data = new Array(9).fill(0);
-    fish.forEach(f => {
+    fishList.forEach(f => {
         data[f]++;
     });
 

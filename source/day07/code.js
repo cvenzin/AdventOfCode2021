@@ -1,6 +1,6 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day07');
 const crabPositions = lines[0].split(',').map(Number).sort((a, b) => a - b);
@@ -24,6 +24,7 @@ function compute(movingCost) {
 }
 
 function getCheapestFuel(fuel, left, index, movingCost) {
+    // eslint-disable-next-line no-constant-condition
     while (true) {
         const cost = getFuelCost(index, movingCost);
         if (cost < fuel) {

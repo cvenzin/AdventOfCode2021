@@ -1,6 +1,6 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day03');
 
@@ -42,24 +42,24 @@ function part2() {
 }
 console.log(part2());
 
-function getRating(lines, index, inverse) {
-    if (index === lines[0].length || lines.length < 2) {
-        return lines[0];
+function getRating(ls, index, inverse) {
+    if (index === ls[0].length || ls.length < 2) {
+        return ls[0];
     }
     let ones = 0;
-    lines.forEach(l => {
+    ls.forEach(l => {
         if (l[index] === '1') {
             ones++;
         }
     });
-    if (inverse ? ones < lines.length / 2 : ones >= lines.length / 2) {
-        lines = filterLines(lines, '1', index);
+    if (inverse ? ones < ls.length / 2 : ones >= ls.length / 2) {
+        ls = filterLines(ls, '1', index);
     } else {
-        lines = filterLines(lines, '0', index);
+        ls = filterLines(ls, '0', index);
     }
-    return getRating(lines, index + 1, inverse);
+    return getRating(ls, index + 1, inverse);
 }
 
-function filterLines(lines, bit, index) {
-    return lines.filter(l => l[index] === bit);
+function filterLines(ls, bit, index) {
+    return ls.filter(l => l[index] === bit);
 }

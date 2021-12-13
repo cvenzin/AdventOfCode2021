@@ -1,6 +1,6 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day12');
 const caveSystem = getCaveSystem(lines);
@@ -15,9 +15,9 @@ function part2() {
 }
 console.log(part2());
 
-function findPaths(cave, caveSystem, map, allowedSmallCaveVisits, cache) {
+function findPaths(cave, system, map, allowedSmallCaveVisits, cache) {
     let paths = 0;
-    for (let childCaveName of cave.values()) {
+    for (const childCaveName of cave.values()) {
         const newMap = new Map(map);
         if (childCaveName === 'start') {
             continue;
@@ -36,7 +36,7 @@ function findPaths(cave, caveSystem, map, allowedSmallCaveVisits, cache) {
         if (cache.has(key)) {
             paths += cache.get(key);
         } else {
-            const p = findPaths(caveSystem.get(childCaveName), caveSystem, newMap, allowedSmallCaveVisits, cache);
+            const p = findPaths(system.get(childCaveName), system, newMap, allowedSmallCaveVisits, cache);
             cache.set(key, p);
             paths += p;
         }
@@ -44,9 +44,9 @@ function findPaths(cave, caveSystem, map, allowedSmallCaveVisits, cache) {
     return paths;
 }
 
-function getCaveSystem(lines) {
+function getCaveSystem(ls) {
     const map = new Map();
-    lines.forEach(l => {
+    ls.forEach(l => {
         const s = l.split('-');
         const s1 = s[0];
         const s2 = s[1];

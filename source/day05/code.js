@@ -1,6 +1,6 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day05');
 
@@ -25,9 +25,9 @@ function part2() {
 }
 console.log(part2());
 
-function solve(lineSegments){
+function solve(ls){
     const map = new Map();
-    lineSegments.forEach(l => {
+    ls.forEach(l => {
         drawLine(l, map);
     });
     return Array.from(map.values()).filter(v => v > 1).length;

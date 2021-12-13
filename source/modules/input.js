@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'fs';
 
 export function getLines(day) {
     const input = fs.readFileSync(`source/${day}/input.txt`, 'utf-8');

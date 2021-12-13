@@ -1,6 +1,6 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day01');
 const numbers = lines.map(n => Number(n));
@@ -21,11 +21,11 @@ function part2() {
 }
 console.log(part2());
 
-function countIncreases(numbers) {
+function countIncreases(n) {
     let increases = 0;
-    for (let i = 1; i < numbers.length; i++) {
-        const previousNumber = numbers[i - 1];
-        if (numbers[i] > previousNumber) {
+    for (let i = 1; i < n.length; i++) {
+        const previousNumber = n[i - 1];
+        if (n[i] > previousNumber) {
             increases++;
         }
     }

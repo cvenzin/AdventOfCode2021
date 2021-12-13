@@ -10,5 +10,13 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
+        "no-var": 2,
+        "no-extra-semi": 2,
+        "eqeqeq": 2,
+        "prefer-const": 2,
+        "semi": 2,
+        "no-shadow": 2,
+        "object-shorthand": 2,
+        "quotes": [2, "single"]
     }
 };

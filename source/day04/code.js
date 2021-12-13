@@ -1,6 +1,6 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day04');
 const drawnNumbers = lines[0].split(',').map(Number);

@@ -1,21 +1,21 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day13');
 
 function part1() {
-    const coords = getCoordinates(lines);
-    const folds = getFolds(lines);
-    return fold(coords, folds[0]).length;
+    const coords = getCoordinates();
+    const folds = getFolds();
+    return doFold(coords, folds[0]).length;
 }
 console.log(part1());
 
 function part2() {
-    let coords = getCoordinates(lines);
-    const folds = getFolds(lines);
+    let coords = getCoordinates();
+    const folds = getFolds();
     folds.forEach(f => {
-        coords = fold(coords, f);
+        coords = doFold(coords, f);
     });
 
     const maxX = Math.max(...coords.map(c => c[0]));
@@ -36,11 +36,11 @@ function part2() {
 }
 console.log(part2());
 
-function fold(coords, fold) {
+function doFold(coords, fold) {
     const i = fold[0] !== null ? 0 : 1;
     const index = fold[i];
     const stableCoords = coords.filter(c => c[i] < index);
-    const foldResult = stableCoords
+    const foldResult = stableCoords;
     const coordsToFold = coords.filter(c => c[i] > index);
     const foldedCoords = coordsToFold.map(c => i === 1 ? [c[0], (index - 1) - (c[i] - index - 1)] : [(index - 1) - (c[i] - index - 1), c[1]]);
     foldedCoords.forEach(fc => {
@@ -51,9 +51,9 @@ function fold(coords, fold) {
     return foldResult;
 }
 
-function getCoordinates(lines) {
+function getCoordinates() {
     const coordinates = [];
-    for (let l of lines) {
+    for (const l of lines) {
         if (l === '') {
             break;
         }
@@ -62,9 +62,9 @@ function getCoordinates(lines) {
     return coordinates;
 }
 
-function getFolds(lines) {
+function getFolds() {
     const folds = [];
-    for (let l of lines) {
+    for (const l of lines) {
         if (l.startsWith('fold along')) {
             const s = l.split('fold along ')[1].split('=');
             if (s[0] === 'x') {

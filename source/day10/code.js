@@ -1,6 +1,6 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day10');
 
@@ -24,7 +24,7 @@ function part1() {
     lines.forEach(l => {
         const chars = l.split('');
         const stack = [];
-        for (let char of chars) {
+        for (const char of chars) {
             const index = closingChars.indexOf(char);
             if (index > -1) {
                 if (stack.length > 0 && stack[stack.length - 1] === openingChars[index]) {
@@ -45,10 +45,10 @@ console.log(part1());
 function part2() {
     const scores = [];
     loop1:
-        for (let l of lines) {
+        for (const l of lines) {
             const chars = l.split('');
             const stack = [];
-            for (let char of chars) {
+            for (const char of chars) {
                 const index = closingChars.indexOf(char);
                 if (index > -1) {
                     if (stack.length > 0 && stack[stack.length - 1] === openingChars[index]) {
@@ -69,7 +69,7 @@ function part2() {
                 score += autoCompleteScoreTable[closingChars[i]];
             }
             scores.push(score);
-        };
+        }
     return scores.sort((a, b) => a - b)[Math.floor(scores.length / 2)];
 }
 console.log(part2());

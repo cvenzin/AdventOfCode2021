@@ -1,6 +1,6 @@
 import {
     getLines
-} from '../modules/input.js'
+} from '../modules/input.js';
 
 const lines = getLines('day08');
 
@@ -12,7 +12,7 @@ function part1() {
             if (d.length === 2 || d.length === 3 || d.length === 4 || d.length === 7) {
                 count++;
             }
-        })
+        });
     });
     return count;
 }
@@ -27,7 +27,7 @@ function part2() {
         const decodedDigits = [];
         rightDigits.forEach(d => {
             const values = d.split('');
-            decodedDigits.push(definition.findIndex(d => arraysAreEqual(values, d)));
+            decodedDigits.push(definition.findIndex(de => arraysAreEqual(values, de)));
         });
         outputValues.push(Number(decodedDigits.join('')));
     });
