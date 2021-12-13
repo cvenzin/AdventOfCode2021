@@ -39,8 +39,7 @@ console.log(part2());
 function doFold(coords, fold) {
     const i = fold[0] !== null ? 0 : 1;
     const index = fold[i];
-    const stableCoords = coords.filter(c => c[i] < index);
-    const foldResult = stableCoords;
+    const foldResult = coords.filter(c => c[i] < index);
     const coordsToFold = coords.filter(c => c[i] > index);
     const foldedCoords = coordsToFold.map(c => i === 1 ? [c[0], (index - 1) - (c[i] - index - 1)] : [(index - 1) - (c[i] - index - 1), c[1]]);
     foldedCoords.forEach(fc => {
