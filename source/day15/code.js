@@ -10,7 +10,6 @@ function part1() {
 console.log(part1());
 
 function part2() {
-    // slow => ~4min
     return compute(5);
 }
 console.log(part2());
@@ -22,33 +21,38 @@ function compute(factor) {
 
 function getShortestPath(graph, startId, destinationId) {
     const startNode = graph.get(startId);
+    const updatedNodes = new Map();
     startNode.distance = 0;
+    updatedNodes.set(startNode.id, 0);
+    
     while (graph.size > 0) {
-        const node = findNodeWithShortestDistance(graph);
+        const node = findNodeWithShortestDistance(graph, updatedNodes);
         graph.delete(node.id);
+        updatedNodes.delete(node.id);
         for (let i = 0; i < node.neighbors.length; i++) {
             const neighbor = node.neighbors[i];
-            if (neighbor.id === destinationId) {
-                return node.distance + neighbor.risk;
-            }
-            if (graph.get(neighbor.id)) {
+            if (graph.has(neighbor.id)) {
                 const dist = node.distance + neighbor.risk;
                 if (dist < neighbor.distance) {
                     neighbor.distance = dist;
+                    updatedNodes.set(neighbor.id, neighbor.distance);
+                    if (neighbor.id === destinationId) {
+                        return neighbor.distance;
+                    }
                 }
             }
         }
     }
 }
 
-function findNodeWithShortestDistance(graph) {
+function findNodeWithShortestDistance(graph, updatedNodes) {
     let resultNode = null;
     let distance = Number.MAX_SAFE_INTEGER;
-    const nodes = graph.values();
-    for (const node of nodes) {
-        if (node.distance < distance) {
-            distance = node.distance;
-            resultNode = node;
+    const nodes = updatedNodes.entries();
+    for (const [k, d] of nodes) {
+        if (d < distance) {
+            distance = d;
+            resultNode = graph.get(k);
         }
     }
     return resultNode;
@@ -77,7 +81,7 @@ function getNode(i, j, map) {
         id,
         risk: getRisk(i, j),
         neighbors: [],
-        distance: Infinity
+        distance: Number.MAX_SAFE_INTEGER
     };
     map.set(id, node);
     return node;
