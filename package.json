@@ -4,7 +4,8 @@
     "description": "",
     "main": "day01.js",
     "dependencies": {
-        "fs": "0.0.1-security"
+        "fs": "0.0.1-security",
+        "pureimage": "^0.3.8"
     },
     "devDependencies": {
         "eslint": "^7.32.0",
