@@ -9,7 +9,6 @@ const lines = getLines('2018_day17');
 function part1() {
     const map = getMap();
     map.set('500,0', '+');
-
     compute(map);
     printMap(map);
     return countWater(map);
@@ -164,7 +163,10 @@ function printMap(map) {
 }
 
 function countWater(map) {
-    const [minX, minY, maxX, maxY] = getMinMax(map);
+    const [minX, , maxX, ] = getMinMax(map);
+    const data = [...map.entries()].filter(e => e[1] === '#').map(e => e[0]).map(k => k.split(',').map(Number));
+    const minY = Math.min(...data.map(k => k[1]));
+    const maxY = Math.max(...data.map(k => k[1]));
     let water = 0;
     for (let y = minY; y <= maxY; y++) {
         for (let x = minX; x <= maxX; x++) {
