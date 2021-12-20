@@ -6,39 +6,28 @@ const lines = getLines('day19');
 
 function part1And2() {
     const scanners = getScanners();
-    scanners.forEach(scanner => {
-        setAllRotations(scanner);
-    });
-    scanners.forEach(scanner => {
-        setAllVectors(scanner);
-    });
-    const scanner0map = scanners[0].rotations[0];
-    const scanner0Set = new Set();
-    scanner0map.forEach(c => {
-        scanner0Set.add(`${c}`);
-    });
-    const queue = [];
-    for (let i = 1; i < scanners.length; i++) {
-        queue.push(scanners[i]);
-    }
-    let mapVectorToCoordinate = getMapVectorToCoordinate(scanner0Set);
+    const scanner0rotation = scanners[0].rotations[0];
+    const allScannerSet = new Set(scanner0rotation.map(c => c.toString()));
+    const queue = [...scanners];
+    let mapVectorToCoordinate = getMapVectorToCoordinate(allScannerSet);
     const scannerPositions = [];
     while (queue.length > 0) {
         const scanner = queue.shift();
         let match = false;
-        for (let i = 0; i < scanner.rotations.length; i++) {
+        for (let i = 0; i < 24; i++) {
+            setRotation(scanner, i);
+            setVectors(scanner, i);
             const [matched, offsetX, offsetY, offsetZ] = hasMatch(mapVectorToCoordinate, scanner.vectors[i]);
             match = matched;
             if (match) {
                 for (let j = 0; j < scanner.rotations[i].length; j++) {
-                    scanner0Set.add(`${scanner.rotations[i][j][0] + offsetX},${scanner.rotations[i][j][1] + offsetY},${scanner.rotations[i][j][2] + offsetZ}`);
+                    allScannerSet.add(`${scanner.rotations[i][j][0] + offsetX},${scanner.rotations[i][j][1] + offsetY},${scanner.rotations[i][j][2] + offsetZ}`);
                 }
-                mapVectorToCoordinate = getMapVectorToCoordinate(scanner0Set);
+                mapVectorToCoordinate = getMapVectorToCoordinate(allScannerSet);
                 scannerPositions.push([offsetX, offsetY, offsetZ]);
                 break;
             }
         }
-
         if (!match) {
             queue.push(scanner);
         }
@@ -46,15 +35,15 @@ function part1And2() {
     let maxDistance = 0;
     for (let i = 0; i < scannerPositions.length; i++) {
         for (let j = 0; j < scannerPositions.length; j++) {
-            const a = scannerPositions[i];
-            const b = scannerPositions[j];
-            const d = Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]) + Math.abs(b[2] - a[2]);
-            if (d > maxDistance) {
-                maxDistance = d;
+            const to = scannerPositions[i];
+            const from = scannerPositions[j];
+            const distance = Math.abs(from[0] - to[0]) + Math.abs(from[1] - to[1]) + Math.abs(from[2] - to[2]);
+            if (distance > maxDistance) {
+                maxDistance = distance;
             }
         }
     }
-    return `beacons: ${scanner0Set.size}, largestDistance: ${maxDistance}`;
+    return `beacons: ${allScannerSet.size}, largestDistance: ${maxDistance}`;
 }
 console.log(part1And2());
 
@@ -75,16 +64,35 @@ function hasMatch(mapVectorToCoordinate, scannerXVectors) {
         if (mapVectorToCoordinate.has(key)) {
             count++;
             if (count === 12) {
-                const a = mapVectorToCoordinate.get(key);
-                const b = scannerXVectors[i][1];
-                const offsetX = a[0] - b[0];
-                const offsetY = a[1] - b[1];
-                const offsetZ = a[2] - b[2];
+                const from = mapVectorToCoordinate.get(key);
+                const to = scannerXVectors[i][1];
+                const offsetX = from[0] - to[0];
+                const offsetY = from[1] - to[1];
+                const offsetZ = from[2] - to[2];
                 return [true, offsetX, offsetY, offsetZ];
             }
         }
     }
     return [false, 0, 0, 0];
+}
+
+function setRotation(scanner, i) {
+    if (scanner.rotations[i]) {
+        return;
+    }
+    const rotation = [];
+    const input = scanner.rotations[0];
+    for (let j = 0; j < input.length; j++) {
+        rotation.push(rotate(input[j], i));
+    }
+    scanner.rotations[i] = rotation;
+}
+
+function setVectors(scanner, i) {
+    if (scanner.vectors[i]) {
+        return;
+    }
+    scanner.vectors[i] = getVectors(scanner.rotations[i]);
 }
 
 function getVectors(rotation) {
@@ -94,8 +102,8 @@ function getVectors(rotation) {
             if (i === j) {
                 continue;
             }
-            const v = getVector(rotation[i], rotation[j]);
-            vectors.push([v, rotation[i], rotation[j]]);
+            const vector = getVector(rotation[i], rotation[j]);
+            vectors.push([vector, rotation[i], rotation[j]]);
         }
     }
     return vectors;
@@ -114,7 +122,8 @@ function getScanners() {
                 id: lines[i].split(' ')[2],
                 rotations: [
                     []
-                ]
+                ],
+                vectors: []
             };
         } else if (lines[i] !== '') {
             scanner.rotations[0].push(lines[i].split(',').map(Number));
@@ -125,25 +134,6 @@ function getScanners() {
     }
     scanners.push(scanner);
     return scanners;
-}
-
-function setAllRotations(scanner) {
-    const input = scanner.rotations[0];
-    let rotation = [];
-    for (let i = 1; i < 24; i++) {
-        for (let j = 0; j < input.length; j++) {
-            rotation.push(rotate(input[j], i));
-        }
-        scanner.rotations.push(rotation);
-        rotation = [];
-    }
-}
-
-function setAllVectors(scanner) {
-    scanner.vectors = [];
-    for (let i = 0; i < scanner.rotations.length; i++) {
-        scanner.vectors.push(getVectors(scanner.rotations[i]));
-    }
 }
 
 // got from reddit
