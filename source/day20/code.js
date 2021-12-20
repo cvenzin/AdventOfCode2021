@@ -24,7 +24,7 @@ function getLitCount(iterations) {
     let minY = Math.min(...yValues);
     let maxX = Math.max(...xValues);
     let maxY = Math.max(...yValues);
-    let outOfBoundsValue = 0;
+    let outOfBoundsValue = '0';
     const startsWithHash = algorithm[0] === '#';
     for (let i = 0; i < iterations; i++) {
         [image, outOfBoundsValue, minX, minY, maxX, maxY] = enhance(image, outOfBoundsValue, minX, minY, maxX, maxY, startsWithHash);
@@ -41,7 +41,7 @@ function enhance(image, outOfBoundsValue, minX, minY, maxX, maxY, startsWithHash
             }
         }
     }
-    return [enhancedImage, startsWithHash && outOfBoundsValue === 0 ? 1 : 0, --minX, --minY, ++maxX, ++maxY];
+    return [enhancedImage, startsWithHash && outOfBoundsValue === '0' ? '1' : '0', --minX, --minY, ++maxX, ++maxY];
 }
 
 function isLit(x, y, minX, minY, maxX, maxY, image, outOfBoundsValue) {
